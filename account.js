@@ -4,11 +4,17 @@ const { sendApi } = require("./sendApi");
 const accountApi = async (req, res) => {
     const data      = req.body;
     const browser   = await puppeteer.launch({
+        executablePath: process.env.NODE_ENV === "producttion" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
         headless: true,
         aboutBlank: false,
         slowMo: 100,
         ignoreHTTPSErrors: true,
-        args: [`--window-size=640,480`],
+        args: [
+            "--window-size=640,480",
+            "--disable-setuid-sanbox",
+            "--single-process",
+            "--no-zegote"
+        ],
         defaultViewport: {
             width: 640,
             height: 480,
